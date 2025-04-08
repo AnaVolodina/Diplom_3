@@ -4,20 +4,18 @@ import allure
 from selenium.webdriver.common.action_chains import ActionChains
 from locators import Locators
 from pages.base_page import BasePage
-from data import TestData, URLs
+from data import TestData
+from URLs import *
 
 
 class Account(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
-    def open_page(self):
-        pass
-
     @allure.step("Нажатие на кнопку Личный кабинет")
     def click_on_lk_button(self):
-        self.find_element((Locators.PERSONAL_ACCOUNT_BUTTON))
-        self.click_element((Locators.PERSONAL_ACCOUNT_BUTTON))
+        self.find_element(Locators.PERSONAL_ACCOUNT_BUTTON)
+        self.click_element(Locators.PERSONAL_ACCOUNT_BUTTON)
 
     @allure.step("Проверка перехода на страницу авторизации")
     def authorization_page(self):
@@ -34,7 +32,7 @@ class Account(BasePage):
 
     @allure.step("Проверка перехода на страницу профиля")
     def check_account_page(self):
-        self.wait_url_to_be(URLs.PERSONAL_ACCOUNT_PAGE)
+        self.wait_url_to_be(f'{URLs.BASE_URL}{URLs.PERSONAL_ACCOUNT_PAGE}')
         return self.get_current_url()
 
     @allure.step("Нажатие на кнопку История заказов и проверка перехода в данный раздел")
@@ -56,7 +54,7 @@ class Account(BasePage):
 
     @allure.step("Проверка перехода на страницу авторизации после нажатия на кнопку Выход")
     def auth_page(self):
-        self.wait_url_to_be(URLs.LOGIN_PAGE)
+        self.wait_url_to_be(f'{URLs.BASE_URL}{URLs.LOGIN_PAGE}')
         return self.get_current_url()
 
 

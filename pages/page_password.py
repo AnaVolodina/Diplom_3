@@ -6,15 +6,13 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from locators import Locators
 
 from pages.base_page import BasePage
-from data import URLs, TestData
+from data import TestData
+from URLs import *
 from selenium.webdriver.common.keys import Keys
 
 class PasswordRecovery(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
-
-    def open_page(self):
-        pass
 
     @allure.step("Нажатие на кнопку Войти в аккаунт")
     def click_on_lk_button(self):
@@ -28,7 +26,7 @@ class PasswordRecovery(BasePage):
 
     @allure.step("Проверка перехода на страницу восстановления пароля")
     def recovery_password_page(self):
-        self.check_url(URLs.FORGOT_PASSWORD_PAGE)
+        self.check_url(f'{URLs.BASE_URL}{URLs.FORGOT_PASSWORD_PAGE}')
 
     @allure.step("Заполнение поля email на странице восстановления пароля")
     def fill_email_field(self):
@@ -42,7 +40,7 @@ class PasswordRecovery(BasePage):
 
     @allure.step("Ожидание перехода на страницу сброса пароля")
     def open_reset_password_page(self):
-        self.wait_url_to_be(URLs.RESET_PASSWORD_PAGE)
+        self.wait_url_to_be(f'{URLs.BASE_URL}{URLs.RESET_PASSWORD_PAGE}')
 
 
     @allure.step("Проверка подсветки поля при клике по кнопке показать/скрыть пароль")

@@ -5,7 +5,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
-from data import URLs
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -16,9 +15,6 @@ class BasePage:
         self.driver = driver
         self.actions = ActionChains(self.driver)
         self.wait = WebDriverWait(self.driver, 20)
-
-    def open_page(self):
-        self.driver.get(URLs.BASE_URL)
 
     def get_current_url(self):
         return self.driver.current_url

@@ -2,28 +2,23 @@ import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # Добавляем родительский каталог
 
 import allure
-from data import URLs
+from URLs import *
 from selenium.webdriver.common.keys import Keys
 from locators import Locators
 from pages.base_page import BasePage
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support import expected_conditions as EC
 
 
 class FeedPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
-    def open_page(self):
-        pass
-
     @allure.step('Переход в раздел Лента заказов')
     def go_to_feed_page(self, driver):
-        self.wait_until_element_closed(Locators.OVERLAY)
         element = self.find_element(Locators.FEED_BUTTON)
         actions = ActionChains(driver)
         actions.move_to_element(element).click().perform()
-        self.wait_url_to_be(URLs.FEED_PAGE)
+        self.wait_url_to_be(f'{URLs.BASE_URL}{URLs.FEED_PAGE}')
 
 
     @allure.step('Клик по заказу в ленте и открытие окна с деталями заказа')
@@ -41,29 +36,18 @@ class FeedPage(BasePage):
         actions = ActionChains(driver)
         actions.move_to_element(element).click().perform()
 
-    @allure.step('Получение номера первого заказа из истории заказов пользователя')
-    def get_first_order_number(self):
-        self.find_element(Locators.FIRST_USER_ORDER)
-        self.click_element(Locators.FIRST_USER_ORDER)
-        self.get_element_text(Locators.FIRST_USER_ORDER_ID)
-        self.click_element(Locators.CLOSE_DETAILS_WINDOW_BUTTON)
 
-    @allure.step('Проверка отображения заказов из истории на странице «Лента заказов»')
-    def search_user_order_in_feed(self, order_number):
+    @allure.step("Проверка совпадения заказов в истории и в ленте")
+    def check_order_id(self, order_id, locator):
+        elements = self.find_until_all_elements_located(locator)
+        for element in elements:
+            if order_id == element.text:
+                return True
+        return True
 
-        order_elements = self.driver.find_elements(*Locators.ORDER_NUMBER_LIST)  # Получаем список элементов с номерами заказов
-        for element in order_elements:
-            if order_number in element.text:  # Ищем совпадение
-                return True  # Если есть - возвращаем True
-        return False
-
-    @allure.step('Получение списка заказов из Ленты заказов')
-    def get_orders_list(self):
-        order = self.find_until_all_elements_located(Locators.ALL_ORDERS_FEED_PAGE)
-        for order_list in order:
-            order_number = order_list.text
-            return order_number
-
+    @allure.step("Проверка нахождения идентификатора заказа в истории")
+    def order_id_found_in_history(self, order_number):
+        return self.check_order_id(order_number, Locators.USER_ORDERS_LIST)
 
     @allure.step('Получение номера нового заказа')
     def get_new_order_number(self):

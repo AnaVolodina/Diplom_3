@@ -1,9 +1,9 @@
 import sys, os
-
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # Добавляем родительский каталог
 
 import allure
 from data import *
+from URLs import *
 from locators import Locators
 from pages.base_page import *
 
@@ -12,13 +12,12 @@ class BaseFunctions(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
-    def open_page(self):
-        pass
-
     @allure.step('Переход по клику на Ленту заказов')
-    def click_on_feed_button(self):
-        self.find_element(Locators.FEED_BUTTON)
-        self.click_element(Locators.FEED_BUTTON)
+    def click_on_feed_button(self, driver):
+        self.wait_until_element_closed(Locators.OVERLAY)
+        element = self.find_element(Locators.FEED_BUTTON)
+        actions = ActionChains(driver)
+        actions.move_to_element(element).click().perform()
 
 
     @allure.step('Переход по клику на конструктор')
@@ -63,7 +62,7 @@ class BaseFunctions(BasePage):
     def user_authorization(self):
         self.find_element(Locators.LOGIN_BUTTON_MAIN_PAGE)
         self.click_element(Locators.LOGIN_BUTTON_MAIN_PAGE)
-        self.check_url(URLs.LOGIN_PAGE)
+        self.check_url(f'{URLs.BASE_URL}{URLs.LOGIN_PAGE}')
         self.send_keys_to_element(Locators.EMAIL_FIELD_LOGIN_PAGE, TestData.EMAIL_FOR_LOGIN)
         self.send_keys_to_element(Locators.PASSWORD_FIELD_LOGIN_PAGE, TestData.PASSWORD_FOR_LOGIN)
         self.scroll_to_element(Locators.LOGIN_BUTTON)

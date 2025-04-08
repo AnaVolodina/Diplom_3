@@ -48,13 +48,14 @@ class Locators:
     COUNTER_DAILY_ORDERS = (By.XPATH, "//p[contains(., 'Выполнено за сегодня:')]/following-sibling::p[contains(@class, 'OrderFeed_number') and contains(@class, 'text_type_digits-large')]") # счетчик "Выполнено за сегодня"
     COUNTER_ALL_ORDERS = (By.XPATH, "//p[contains(., 'Выполнено за все время:')]/following-sibling::p[contains(@class, 'OrderFeed_number') and contains(@class, 'text_type_digits-large')]") # счетчик "Выполнено за все время"
     FIRST_USER_ORDER = (By.CLASS_NAME, 'OrderHistory_link__1iNby') # карточка первого заказа в списке пользователя
-    FIRST_USER_ORDER_ID = (By.CSS_SELECTOR, '.text.text_type_digits-default.mb-10.mt-5') # номер первого заказа в списке пользователя
+    FIRST_USER_ORDER_ID = (By.XPATH, '//div[contains(@class, "OrderHistory_textBox")]/p[contains(@class, "text_type_digits-default")]') # номер первого заказа в списке пользователя
     ORDER_NUMBER_LIST = (By.CSS_SELECTOR, ".Order_number__item") # список с номерами заказов
     OVERLAY = (By.CSS_SELECTOR, 'div.Modal_modal_overlay__x2ZCr') # перекрывающий фон
     NEW_ORDER_NUMBER = (By.XPATH, '//h2[contains(@class, "Modal_modal__title__") and contains(@class, "text_type_digits-large mb-8")]') # номер нового заказа
     LOADING_ANIMATION = (By.CLASS_NAME, 'Modal_modal__loading__3534A') # анимация ожидания до загрузки страницы
 
-    USER_ORDERS_LIST = (By.CSS_SELECTOR, '#root>div>main>div>div>ul') # список заказов пользователя
+    USER_ORDERS_LIST = (By.XPATH, "//div[contains(@class, 'OrderHistory_textBox__3lgbs')]/p[contains(@class, "
+                                       "'text_type_digits-default')]") # список заказов пользователя
 
 
     LOGIN_BUTTON_MAIN_PAGE = (By.XPATH, '//button[text()="Войти в аккаунт"]') #кнопка "Войти в аккаунт" на главной странице
